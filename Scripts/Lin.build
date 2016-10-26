@@ -39,30 +39,33 @@
                 <variable name="gitdir" value="C:\temp\teamcity3"></variable>
             </environment>	
         </exec>
+		<echo message="** init done **" />
         <exec program="C:\Program Files\Git\cmd\git.exe">
             <arg value="ls-files" />
 								<environment>
                 <variable name="gitdir" value="C:\temp\teamcity3"></variable>
             </environment>			
-        </exec>		
+        </exec>	
+		<echo message="** ls-files done **" />		
         <exec program="C:\Program Files\Git\cmd\git.exe">
             <arg value="add" />
 			<arg value="." />
 			
         </exec>
+				<echo message="** End of build process for ${project.packagename} **" />
         <exec program="C:\Program Files\Git\cmd\git.exe">
             <arg value="commit" />
 			<arg value="-m" />
 			<arg value="'Test commit'" />
 			
         </exec>	
-		
+				<echo message="** commit done **" />
         <exec program="C:\Program Files\Git\cmd\git.exe">
             <arg value="push" />
 			            <arg value="-u" />
             <arg value="origin" />
 						            <arg value="master" />
-		
+				<echo message="** push done **" />
         </exec>			
     </target>
 
