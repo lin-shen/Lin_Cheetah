@@ -65,8 +65,9 @@
 			            <arg value="-u" />
             <arg value="origin" />
 						            <arg value="master" />
-				<echo message="** push done **" />
-        </exec>			
+				
+        </exec>	
+<echo message="** push done **" />		
     </target>
 
 	    <target name="CheckOutGit" description="Call git.exe to pull down the latest source">
