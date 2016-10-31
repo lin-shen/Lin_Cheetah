@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="AU Tax Autobuild" default="LinCheetah" xmlns="http://nant.sf.net/release/0.85/nant.xsd" >
+    <!--  
+    ****************************************************************************
+    *************************** AU Tax AutoBuild *****************************
+    **************************************************************************** 
+    -->
+
+    <echo message="Setting build parameters" />
+
+    <!-- LOG FILE PROPERTIES -->
+    <!-- date and time stamps -->
+    <tstamp property="cdatetime" pattern="yyyyMMddHHmm" verbose="true" />
+    <tstamp property="project.starttime" pattern="dd MMM yyyy HH:mm" verbose="true" />
+    
+
+    <!-- PROJECT PROPERTIES -->
+    <!-- set build parameters -->
+    <property name="project.name"          value="AuTaxCore" />
+    <property name="project.packagename"   value="${project.name} Automated Build" />
+    <!-- *** UPDATE VALUES HERE *** -->
+    <property name="project.prioryear"     value="2015" />
+    <property name="project.currentyear"   value="2016" />
+    <property name="project.pdfprior"      value="Forms15" />
+    <property name="project.pdfcurrent"    value="Forms16" />
+    <property name="project.version"       value="${project.currentyear}.1b" />
+    <property name="project.expresso"      value="4_16" />
+    <property name="project.folder"        value="1611 Tax ${project.version}" />
+    <!-- set next property to "false" if you don't need to update files in folders (i.e. no file changes) -->
+    <property name="project.doupdate" value="true" />
+    <!-- set next property to "false" if you don't need to update files in build folders (e.g. still in beta) -->
+    <property name="project.buildupdate" value="true" />
+
+    <target name="CheckInGit" description="Call git.exe to pull down the latest source">
+        <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="init" />
+			<arg value="C:\temp\teamcity3" />
+									<environment>
+                <variable name="gitdir" value="C:\temp\teamcity3"></variable>
+            </environment>	
+        </exec>
+		<echo message="** init done **" />
+        <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="ls-files" />
+								<environment>
+                <variable name="gitdir" value="C:\temp\teamcity3"></variable>
+            </environment>			
+        </exec>	
+		<echo message="** ls-files done **" />		
+        <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="add" />
+			<arg value="." />
+			
+        </exec>
+				<echo message="** End of build process for ${project.packagename} **" />
+        <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="commit" />
+			<arg value="-m" />
+			<arg value="'Test commit'" />
+			
+        </exec>	
+				<echo message="** commit done **" />
+        <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="push" />
+			            <arg value="-u" />
+            <arg value="origin" />
+						            <arg value="master" />
+				
+        </exec>	
+<echo message="** push done **" />		
+    </target>
+
+	    <target name="CheckOutGit" description="Call git.exe to pull down the latest source">
+		<exec program="C:\Program Files\Git\cmd\git.exe">
+		<arg value="init" />
+		<arg value="C:\temp\teamcity3" />
+								<environment>
+                <variable name="gitdir" value="C:\temp\teamcity3"></variable>
+            </environment>
+		</exec>
+
+ <exec program="C:\Program Files\Git\cmd\git.exe">
+            <arg value="pull" />
+            <arg value="https://github.com/lin-shen/Lin_Cheetah.git" />
+            <arg value="master" />
+						<environment>
+                <variable name="gitdir" value="C:\temp\teamcity3"></variable>
+            </environment>
+        </exec>
+    </target>
+	
+	
+    <target name="LinCheetah" description="Main entry point for script">
+        
+        <!-- CALL TARGETS -->
+		<!-- <call target="CheckOutGit" />-->
+			<!-- check in to Git -->  
+        <call target="CheckInGit" />
+       
+        <echo message="** End of build process for ${project.packagename} **" />
+    </target>
+       	
+   	<!-- END build process -->    
+    <echo message="** End of Staging process for ${project.packagename} **" />
+
+</project>
